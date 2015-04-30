@@ -25,7 +25,7 @@ Brief introduction to the Ur language and its current incarnation in Ur/Web.
 \section{Going Badless}
 \subsection{Ur}
 
-\begin{frame}
+\begin{frame}{Ur}
 \textbf{Ur} is a relative of Haskell and ML.
 
 \begin{itemize}
@@ -34,8 +34,59 @@ Brief introduction to the Ur language and its current incarnation in Ur/Web.
 \item Strict
 \item Type level programming
 \item Row types
+\item Type classes too!
 \end{itemize}
 \end{frame}
+
+\subsection{Ur/Web}
+\begin{frame}{Ur/Web}
+
+\begin{itemize}
+\item \textbf{Ur} is currently unavailable outside of \textbf{Ur/Web}.
+\vspace{\baselineskip}
+\item \textbf{Ur/Web} is \textbf{Ur} plus a special standard library,
+ plus a special compiler, purpose built for SQL backed web apps.
+\vspace{\baselineskip}
+\item All designed so that well-typed \textbf{Ur/Web} programs don't 'go wrong'.
+\end{itemize}
+\end{frame}
+
+\section{Badless Double Down}
+\subsection{What won't break}
+\begin{frame}{Woo!}
+\textbf{Ur/Web} applications do not...
+
+\begin{itemize}
+\item Suffer from any kinds of code-injection attacks
+\item Return invalid HTML
+\item Contain dead intra-application links
+\item Have mismatches between HTML forms and the fields expected by their handlers
+\item Include client-side code that makes incorrect assumptions about the "AJAX"-style services that the remote web server provides
+\item Attempt invalid SQL queries
+\item Use improper marshaling or unmarshaling in communication with SQL databases or between browsers and web servers
+\end{itemize}
+\end{frame}
+
+
+\section{App Demo}
+\subsection{Basic app}
+\begin{frame}{Get on with it...}
+As is typical, enough of this jibber-jabber.
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+CUE THE DEMO!
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+It's not "hello, world!", I promise.
+\end{frame}
+
+
+
+
+
+
+
+
 
 
 \end{document}

@@ -150,10 +150,12 @@ If you didn't have to write the JavaScript, is it really badless JavaScript?\\
 \begin{frame}[fragile]{Front End McGuffins}
 Dynamic html is simple to include:
 \begin{verbatim}
+# doSomthingAmazing : a -> transaction xbody
 <dyn signal={s <- signal s; doSomethingAmazing s}/>
 \end{verbatim}
 All your favourite events are there too:
 \begin{verbatim}
+# foo : 'evt -> transaction unit'
 <button onclick={fn evt => foo evt}/>
 \end{verbatim}
 \end{frame}

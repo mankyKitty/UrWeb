@@ -88,7 +88,23 @@ fun main () = return <xml>Hello, World!</xml>
 \item XHTML (and HTML5) are built into the language.\\
 \item Structure is also \textbf{verified} by the language.
 \end{itemize}
+\end{frame}
 
+\begin{frame}[fragile]{XML Built In (yay?)}
+Compile time checks of structure:
+\begin{verbatim}
+<xml><body>
+  <h1>Woot</h2> <-- compile error
+</body></xml>
+\end{verbatim}
+Prevents noobing it up from simple errors:
+\begin{verbatim}
+<xml><body>
+  <form action={nomForm}>
+		<form> <input type="text"> </form> <-- illegal subform
+  </form>
+</body></xml>
+\end{verbatim}
 \end{frame}
 
 \subsection{Query-Tastic}
@@ -100,7 +116,23 @@ fun main () = return <xml>Hello, World!</xml>
 \item Types for queries and tables are checked at compile time.
 \item Database creation SQL is provided by the compiler.
 \end{itemize}
-
+\end{frame}
+\begin{frame}[fragile]{SQL Built In !}
+Make a table:
+\begin{verbatim}
+table foo : { Id : int, Buzz : string, Created : time }
+  PRIMARY KEY Id
+\end{verbatim}
+Query, just a little bit:
+\begin{verbatim}
+fun list () =
+  rows <- queryX (SELECT * FROM foo)
+    (fun row => <xml><div><h1>{[row.Foo.Buzz]}</h1>
+        <p>Created: {[row.Foo.Created]}</p>
+      </div></xml>);
+  return
+    <xml>{rows}</xml>
+\end{verbatim}
 \end{frame}
 
 \subsection{No More JavaScript}
@@ -113,6 +145,17 @@ If you didn't have to write the JavaScript, is it really badless JavaScript?\\
 \item Signal based Functional Reactive Programming.
 \item Communication by 'rpc' and typed 'channels'.
 \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Front End McGuffins}
+Dynamic html is simple to include:
+\begin{verbatim}
+<dyn signal={s <- signal s; doSomethingAmazing s}/>
+\end{verbatim}
+All your favourite events are there too:
+\begin{verbatim}
+<button onclick={fn evt => foo evt}/>
+\end{verbatim}
 \end{frame}
 
 \subsection{More Fun}

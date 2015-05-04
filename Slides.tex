@@ -16,9 +16,10 @@ Brief introduction to the Ur language and its current incarnation in Ur/Web.
 \begin{itemize}
 \item Going Badless
 \item Simple app walkthrough
+\item XHTML
+\item SQL
+\item JavaScript ... sort of
 \item Type System
-\item Badless - XHTML
-\item Badless - SQL
 \end{itemize}
 \end{frame}
 
@@ -43,10 +44,8 @@ Brief introduction to the Ur language and its current incarnation in Ur/Web.
 
 \begin{itemize}
 \item \textbf{Ur} is currently unavailable outside of \textbf{Ur/Web}.
-\vspace{\baselineskip}
 \item \textbf{Ur/Web} is \textbf{Ur} plus a special standard library,
  plus a special compiler, purpose built for SQL backed web apps.
-\vspace{\baselineskip}
 \item All designed so that well-typed \textbf{Ur/Web} programs don't 'go wrong'.
 \end{itemize}
 \end{frame}
@@ -70,23 +69,126 @@ Brief introduction to the Ur language and its current incarnation in Ur/Web.
 
 \section{App Demo}
 \subsection{Basic app}
-\begin{frame}{Get on with it...}
-As is typical, enough of this jibber-jabber.
-\vspace{\baselineskip}
-\vspace{\baselineskip}
-CUE THE DEMO!
-\vspace{\baselineskip}
-\vspace{\baselineskip}
-It's not "hello, world!", I promise.
+\begin{frame}[fragile]{Get on with it...}
+As is typical, enough of this jibber-jabber.\\
+
+CUE THE DEMO!\\
+
+It's not "hello, world!", because that's just:
+\begin{verbatim}
+fun main () = return <xml>Hello, World!</xml>
+\end{verbatim}
 \end{frame}
 
+\section{Bits}
+\subsection{XHTML / HTML}
+\begin{frame}{XML Built In}
 
+\begin{itemize}
+\item XHTML (and HTML5) are built into the language.\\
+\item Structure is also \textbf{verified} by the language.
+\end{itemize}
 
+\end{frame}
 
+\subsection{Query-Tastic}
+\begin{frame}{SQL Built In !}
 
+\begin{itemize}
+\item Supports Postgresql as default, as well as MySQL, and SQLite.
+\item SQL queries are made up of functions as part of the base library.
+\item Types for queries and tables are checked at compile time.
+\item Database creation SQL is provided by the compiler.
+\end{itemize}
 
+\end{frame}
 
+\subsection{No More JavaScript}
+\begin{frame}{Front End McGuffins}
+If you didn't have to write the JavaScript, is it really badless JavaScript?\\
 
+\begin{itemize}
+\item No difference between back or front end UrWeb code.
+\item Compiler works out which code is required where and compiles accordingly.
+\item Signal based Functional Reactive Programming.
+\item Communication by 'rpc' and typed 'channels'.
+\end{itemize}
+\end{frame}
 
+\subsection{More Fun}
+\begin{frame}[fragile]{Other Bits}
+
+\begin{itemize}
+\item Output is a single executable that can be the web or fastcgi server.
+\item The binary produced is extremely efficient compiled C code.
+\item The binary does not use garbage collection, relying instead on a technique known as 'region based memory management'.
+\item It is "stupid fast". Refer to the Techpower Benchmarks if you're into such things.
+\end{itemize}
+\end{frame}
+
+\subsection{More?!}
+\begin{frame}[fragile]{Bit more}
+All requests run inside a `transaction`, analogous to `IO` from Haskell.
+\begin{verbatim}
+val readBack : transaction int =
+  src <- source 0;
+  set src 1;
+  n <- get src;
+  return (n + 1)
+\end{verbatim}
+EVERYTHING is inside a transaction. Postgres is supported by default due to its strong support for transactions.
+\end{frame}
+
+\section{Type System}
+\subsection{ML With Bells}
+\begin{frame}[fragile]{GIEF TYPES}
+\begin{itemize}
+\item Type inference
+\item Parametric Polymorphism
+\end{itemize}
+\begin{verbatim} fun id [a] (x : a) : a = x \end{verbatim}
+\end{frame}
+
+\subsection{Moar Types}
+\begin{frame}[fragile]
+Higher order functions:
+\begin{verbatim}
+fun map [a] [b] (f : a -> b) : list a -> list b
+\end{verbatim}
+Polymorphic datatypes:
+\begin{verbatim}
+datatype tree a = Leaf of a | Node of tree a * tree a
+\end{verbatim}
+\end{frame}
+
+\subsection{Haskelly Bits}
+\begin{frame}[fragile]
+Typeclasses from Haskell:
+\begin{verbatim}
+fun max [a] (_ : ord a) (x : a) (y : a) : a = ...
+\end{verbatim}
+Anonymous Records:
+\begin{verbatim}
+val x = { A = 0, B = "Fred" }
+x.A == 0
+\end{verbatim}
+\end{frame}
+
+\subsection{First Class}
+\begin{frame}[fragile]{Pew-Pew-Pewlymorphism}
+"Impredicative or First-Class Polymorphism goes beyond Hidley-Milner's let polymorphism to allow arguments to functions to themselves be polymorphic"
+\begin{verbatim}
+type nat = t :: Type -> t -> (t -> t) -> t
+val zero : nat = fn [t :: Type] (z : t) (s : t -> t) => z
+fun succ (n : nat) : nat = 
+  fn [t :: Type] (z : t) (s : t -> t) => s (n [t] z s)
+
+val one = succ zero
+val two = succ one
+val three = succ two
+
+three [int] 0 (plus 1) == 3
+\end{verbatim}
+\end{frame}
 
 \end{document}
